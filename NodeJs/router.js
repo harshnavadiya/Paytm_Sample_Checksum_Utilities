@@ -14,13 +14,13 @@ function route(request,response){
 		case '/generate_checksum':
 			if(request.method == 'POST'){
 			var paramarray = {};
-				paramarray['MID'] = '';
-				paramarray['ORDER_ID'] = '';
-				paramarray['CUST_ID'] = '';
-				paramarray['INDUSTRY_TYPE_ID'] = '';
-				paramarray['CHANNEL_ID'] = '';
-				paramarray['TXN_AMOUNT'] = '';
-				paramarray['WEBSITE'] = '';
+				paramarray['MID'] = 'xxxxxxxxxxxxxx';
+				paramarray['ORDER_ID'] = 'xxxxxxxxxx';
+				paramarray['CUST_ID'] = 'xxxxx';
+				paramarray['INDUSTRY_TYPE_ID'] = 'xxxxxxxxx';
+				paramarray['CHANNEL_ID'] = 'xxxxxxxxx';
+				paramarray['TXN_AMOUNT'] = 'xxxxxxxxx';
+				paramarray['WEBSITE'] = 'xxxxxxxxxxxx';
 					paytm_checksum.genchecksum(paramarray, paytm_config.MERCHANT_KEY, function (err, res) {
 						response.writeHead(200, {'Content-type' : 'text/json','Cache-Control': 'no-cache'});
 						response.write(JSON.stringify(res));
