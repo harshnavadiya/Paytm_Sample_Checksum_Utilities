@@ -1,22 +1,22 @@
 #!/usr/bin/python
 
 import Checksum
-import requests
+#import requests
 import base64
-import json
-import requests
+#import json
+#import requests
 
 print "Content-type: text/html\n"
 MERCHANT_KEY = 'XXXXXXXXXXX';
-import cgi
+#import cgi
 
-form = cgi.FieldStorage()
+response_params= {}  # Pass paytm response here
 respons_dict = {}
 
-for i in form.keys():
- respons_dict[i]=form[i].value
+for i in response_params.keys():
+ respons_dict[i]=response_params[i].value
  if i=='CHECKSUMHASH':
-    checksum = form[i].value
+    checksum = response_params[i].value
 
 if 'GATEWAYNAME' in respons_dict:
 	if respons_dict['GATEWAYNAME'] == 'WALLET':

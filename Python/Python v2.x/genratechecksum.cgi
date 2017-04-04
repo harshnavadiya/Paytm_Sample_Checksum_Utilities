@@ -1,16 +1,16 @@
 #!/usr/bin/python
 
 import Checksum
-import requests
+#import requests
 import base64
-import json
-import requests
+#import json
+#import requests
 
 print "Content-type: text/html\n"
 MERCHANT_KEY = 'XXXXXXXXX';
-import cgi
+#import cgi
 
-form = cgi.FieldStorage()
+#form = cgi.FieldStorage()
 respons_dict = {}
 
 respons_dict['MID'] = 'XXXXXXXXX';
@@ -26,10 +26,10 @@ respons_dict['CALLBACK_URL'] = 'XXXXXXXXX';
 
 checksum = Checksum.generate_checksum(respons_dict, MERCHANT_KEY)
 
-paramarr = {};
+#paramarr = {};
 
-paramarr = respons_dict;
+#paramarr = respons_dict;
 
-paramarr['CHECKSUMHASH'] = checksum;
+respons_dict['CHECKSUMHASH'] = checksum;
 
-print paramarr;
+print respons_dict;
