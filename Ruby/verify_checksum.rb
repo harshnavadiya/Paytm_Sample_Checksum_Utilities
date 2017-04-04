@@ -1,8 +1,8 @@
 #!C:\Ruby21-x64\bin\ruby.exe
 require './paytm/encryption_new_pg.rb'
 require './paytm/checksum_tool.rb'
-require 'json'
-require 'cgi'
+#require 'json'
+#require 'cgi'
 
 cgi = CGI.new
 params = cgi.params

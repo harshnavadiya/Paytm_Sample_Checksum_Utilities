@@ -1,11 +1,11 @@
 #!C:\Ruby21-x64\bin\ruby.exe
 require './paytm/encryption_new_pg.rb'
 require './paytm/checksum_tool.rb'
-require 'json'
-require 'cgi'
+#require 'json'
+#require 'cgi'
 require 'uri'
-cgi = CGI.new
-params = cgi.params
+#cgi = CGI.new
+#params = cgi.params
 
 
 puts "Content-type: text/html"
@@ -24,10 +24,10 @@ paytmHASH["EMAIL"] = 'XXXXXXXXXX';
 paytmHASH["MOBILE_NO"] = 'XXXXXXXXXX';
 paytmHASH["CALLBACK_URL"] = 'XXXXXXXXXX';
 
-paytmparamsnew = paytmHASH
+#paytmparamsnew = paytmHASH
 
 checksum_hash = ChecksumTool.new.get_checksum_hash(paytmHASH).gsub("\n",'')
 
-paytmparamsnew["CHECKSUMHASH"] =  checksum_hash
+paytmHASH["CHECKSUMHASH"] =  checksum_hash
 
-puts "#{paytmparamsnew}"
+puts "#{paytmHASH}"
