@@ -13,16 +13,16 @@ MERCHANT_KEY = 'XXXXXXXXXX';
 #form = cgi.FieldStorage()
 respons_dict = {}
 
-respons_dict['MID'] = 'XXXXXXXXXX';
-respons_dict['ORDER_ID'] = 'XXXXXXXXXX';
-respons_dict['CUST_ID'] = 'XXXXXXXXXX';
-respons_dict['INDUSTRY_TYPE_ID'] = 'XXXXXXXXXX';
-respons_dict['CHANNEL_ID'] = 'XXXXXXXXXX';
-respons_dict['TXN_AMOUNT'] = 'XXXXXXXXXX';
-respons_dict['WEBSITE'] = 'XXXXXXXXXX';
-respons_dict['EMAIL'] = 'XXXXXXXXXX';
-respons_dict['MOBILE_NO'] = 'XXXXXXXXXX';
-respons_dict['CALLBACK_URL'] = 'XXXXXXXXXX';
+respons_dict['MID'] = 'XXXXXXXXX';   #Provided by Paytm
+respons_dict['ORDER_ID'] = 'ORDER0000001'; #unique OrderId for every request
+respons_dict['CUST_ID'] = 'CUST00001'; # unique customer identifier 
+respons_dict['INDUSTRY_TYPE_ID'] = 'XXXXXXXXX'; #Provided by Paytm
+respons_dict['CHANNEL_ID'] = 'WAP'; #Provided by Paytm
+respons_dict['TXN_AMOUNT'] = '1.00'; #transaction amount
+respons_dict['WEBSITE'] = 'XXXXXXXXX'; #Provided by Paytm
+respons_dict['EMAIL'] = 'abc@gmail.com'; #customer email id
+respons_dict['MOBILE_NO'] = '9999999999'; #customer 10 digit mobile no.
+respons_dict['CALLBACK_URL'] = 'https://pguat.paytm.com/paytmchecksum/paytmCallback.jsp';  #Provided by Paytm
 
 
 checksum = Checksum.generate_checksum(respons_dict, MERCHANT_KEY)
