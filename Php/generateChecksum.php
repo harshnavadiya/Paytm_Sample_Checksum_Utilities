@@ -11,18 +11,20 @@ $checkSum = "";
 
 $paramList = array();
 
-$paramList["MID"] = 'xxxxxxxxxxxxx';
-$paramList["ORDER_ID"] = 'xxxxxxxx';
-$paramList["CUST_ID"] = 'xxxxx';
-$paramList["INDUSTRY_TYPE_ID"] = 'xxxxxxxxxxx';
-$paramList["CHANNEL_ID"] = 'xxxx';
-$paramList["TXN_AMOUNT"] = 'xxxxxxx';
-$paramList["WEBSITE"] = 'xxxxxxxx';
-
+$paramList["MID"] = 'xxxxxxxxxxxxx'; //Provided by Paytm
+$paramList["ORDER_ID"] = 'ORDER0000001'; //unique OrderId for every request
+$paramList["CUST_ID"] = 'CUST00001'; // unique customer identifier 
+$paramList["INDUSTRY_TYPE_ID"] = 'xxxxxxxxxxx'; //Provided by Paytm
+$paramList["CHANNEL_ID"] = 'WAP'; //Provided by Paytm
+$paramList["TXN_AMOUNT"] = '1.00'; // transaction amount
+$paramList["WEBSITE"] = 'xxxxxxxx';//Provided by Paytm
+$paramList["CALLBACK_URL"] = 'https://pguat.paytm.com/paytmchecksum/paytmCallback.jsp';//Provided by Paytm
+$paramList["EMAIL"] = 'abc@gmail.com'; // customer email id
+$paramList["MOBILE_NO"] = '9999999999'; // customer 10 digit mobile no.
 
 $checkSum = getChecksumFromArray($paramList,PAYTM_MERCHANT_KEY);
+$paramList["CHECKSUMHASH"] = $checkSum;
 
- echo $checkSum;
+print_r($paramList);
 
- 
 ?>
