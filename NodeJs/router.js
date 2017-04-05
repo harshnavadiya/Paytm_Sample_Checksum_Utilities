@@ -14,14 +14,18 @@ function route(request,response){
 		case '/generate_checksum':
 			if(request.method == 'POST'){
 			var paramarray = {};
-				paramarray['MID'] = 'xxxxxxxxxxxxxx';
-				paramarray['ORDER_ID'] = 'xxxxxxxxxx';
-				paramarray['CUST_ID'] = 'xxxxx';
-				paramarray['INDUSTRY_TYPE_ID'] = 'xxxxxxxxx';
-				paramarray['CHANNEL_ID'] = 'xxxxxxxxx';
-				paramarray['TXN_AMOUNT'] = 'xxxxxxxxx';
-				paramarray['WEBSITE'] = 'xxxxxxxxxxxx';
+				paramarray['MID'] = 'xxxxxxxxxxxxxx'; //Provided by Paytm
+				paramarray['ORDER_ID'] = 'ORDER00001'; //unique OrderId for every request
+				paramarray['CUST_ID'] = 'CUST0001';  // unique customer identifier 
+				paramarray['INDUSTRY_TYPE_ID'] = 'xxxxxxxxx'; //Provided by Paytm
+				paramarray['CHANNEL_ID'] = 'WAP'; //Provided by Paytm
+				paramarray['TXN_AMOUNT'] = '1.00'; // transaction amount
+				paramarray['WEBSITE'] = 'xxxxxxxxxxxx'; //Provided by Paytm
+				paramarray['CALLBACK_URL'] = 'https://pguat.paytm.com/paytmchecksum/paytmCallback.jsp';//Provided by Paytm
+				paramarray['EMAIL'] = 'abc@gmail.com'; // customer email id
+				paramarray['MOBILE_NO'] = '9999999999'; // customer 10 digit mobile no.
 					paytm_checksum.genchecksum(paramarray, paytm_config.MERCHANT_KEY, function (err, res) {
+						paramarray['CHECKSUMHASH'] = JSON.stringify(res);
 						response.writeHead(200, {'Content-type' : 'text/json','Cache-Control': 'no-cache'});
 						response.write(JSON.stringify(res));
 						response.end();
