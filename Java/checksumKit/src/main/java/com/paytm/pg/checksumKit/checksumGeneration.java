@@ -12,21 +12,21 @@ public class checksumGeneration {
 	private static String INDUSTRY_TYPE_ID = "XXXXXXXXXXXX";
 	private static String CHANNLE_ID = "WAP";
 	private static String WEBSITE = "XXXXXXXXXX";
-	private static String CALLBACK_URL = "XXXXXXXXXXXXXX";
+	private static String CALLBACK_URL = "https://pguat.paytm.com/paytmchecksum/paytmCallback.jsp";
 	
 	public static void main(String[] a){
 		
 		TreeMap<String,String> paramMap = new TreeMap<String,String>();
-		paramMap.put("MID" , MID);
-		paramMap.put("ORDER_ID" , "ORDER00011");
-		paramMap.put("CUST_ID" , "CUST00011");
-		paramMap.put("INDUSTRY_TYPE_ID" , INDUSTRY_TYPE_ID);
-		paramMap.put("CHANNEL_ID" , CHANNLE_ID);
-		paramMap.put("TXN_AMOUNT" , "1.00");
-		paramMap.put("WEBSITE" , WEBSITE);
-		paramMap.put("EMAIL" , "test@gmail.com");
-		paramMap.put("MOBILE_NO" , "9999999999");
-		paramMap.put("CALLBACK_URL" , CALLBACK_URL);
+		paramMap.put("MID" , MID); //Provided by Paytm
+		paramMap.put("ORDER_ID" , "ORDER00011"); //unique OrderId for every request
+		paramMap.put("CUST_ID" , "CUST00011"); // unique customer identifier 
+		paramMap.put("INDUSTRY_TYPE_ID" , INDUSTRY_TYPE_ID); //Provided by Paytm
+		paramMap.put("CHANNEL_ID" , CHANNLE_ID); //Provided by Paytm
+		paramMap.put("TXN_AMOUNT" , "1.00"); // transaction amount
+		paramMap.put("WEBSITE" , WEBSITE); //Provided by Paytm
+		paramMap.put("EMAIL" , "test@gmail.com"); // customer email id
+		paramMap.put("MOBILE_NO" , "9999999999"); // customer 10 digit mobile no
+		paramMap.put("CALLBACK_URL" , CALLBACK_URL); //Provided by Paytm
 		
 		try{
 		String checkSum =  CheckSumServiceHelper.getCheckSumServiceHelper().genrateCheckSum(MercahntKey, paramMap);
