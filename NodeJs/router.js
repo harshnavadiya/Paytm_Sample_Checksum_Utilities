@@ -25,7 +25,6 @@ function route(request,response){
 				paramarray['EMAIL'] = 'abc@gmail.com'; // customer email id
 				paramarray['MOBILE_NO'] = '9999999999'; // customer 10 digit mobile no.
 					paytm_checksum.genchecksum(paramarray, paytm_config.MERCHANT_KEY, function (err, res) {
-						paramarray['CHECKSUMHASH'] = JSON.stringify(res);
 						response.writeHead(200, {'Content-type' : 'text/json','Cache-Control': 'no-cache'});
 						response.write(JSON.stringify(res));
 						response.end();
