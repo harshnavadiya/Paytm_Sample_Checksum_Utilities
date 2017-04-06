@@ -9,10 +9,17 @@ var crypto = require('crypto');
 function paramsToString(params, mandatoryflag) {
   var data = '';
   var flag = params.refund ? true : false;
+  var value = "";
   delete params.refund;
   var tempKeys = Object.keys(params);
   if (!flag) tempKeys.sort();
   tempKeys.forEach(function (key) {
+    value = params[key];
+
+    if (value.indexOf("REFUND") > -1 || value.indexOf("|") > -1) {
+      continue;
+    }
+    
     if (key !== 'CHECKSUMHASH' ) {
       if (params[key] === 'null') params[key] = '';
       if (!mandatoryflag || mandatoryParams.indexOf(key) !== -1) {
