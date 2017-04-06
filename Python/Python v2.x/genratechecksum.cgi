@@ -5,7 +5,6 @@ import Checksum
 import base64
 #import json
 #import requests
-
 print "Content-type: text/html\n"
 MERCHANT_KEY = 'XXXXXXXXX';
 #import cgi
