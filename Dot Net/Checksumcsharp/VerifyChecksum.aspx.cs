@@ -13,12 +13,20 @@ public partial class VerifyChecksum : System.Web.UI.Page
             try
             {                
                 string paytmChecksum = "", responseString = "";
-				Bool Isvalidate = false;
+		bool Isvalidate = false;
 
-                foreach (string key in Request.Form.Keys)
-                {
-                    parameters.Add(key.Trim(), Request.Form[key].Trim());
-                }
+            	
+		foreach (string key in Request.Form.Keys)
+           	{
+			if (Request.Form[key].ToUpper().Contains("REFUND") || Request.Form[key].Contains("|"))
+			{
+			    parameters.Add(key.Trim(), "");
+			}
+			else
+			{
+			    parameters.Add(key.Trim(), Request.Form[key].Trim());
+			}
+		}
 
 
                 if (parameters.ContainsKey("CHECKSUMHASH"))
@@ -27,13 +35,13 @@ public partial class VerifyChecksum : System.Web.UI.Page
                     parameters.Remove("CHECKSUMHASH");
                 }
 				
-				Isvalidate = CheckSum.verifyCheckSum(PaytmConstants.MERCHANT_KEY, parameters, paytmChecksum)
+		Isvalidate = CheckSum.verifyCheckSum(PaytmConstants.MERCHANT_KEY, parameters, paytmChecksum)
 
-				Response.Write(Isvalidate);
+		Response.Write(Isvalidate);
             }
             catch (Exception ex)
             {
-                
+                Response.Write(ex.Message);
             }
         }
     }
