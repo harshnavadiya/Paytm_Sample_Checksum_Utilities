@@ -12,7 +12,11 @@ Partial Public Class VerifyChecksum
 				Dim Isvalidate As Bool = false
 
                 For Each key As String In Request.Form.Keys
-                    parameters.Add(key.Trim(), Request.Form(key).Trim())
+                    If Request.Form(key).Contains("|") Or Request.Form(key).ToUpper().Contains("REFUND") Then
+                        parameters.Add(key.Trim(), "")
+                    Else
+                        parameters.Add(key.Trim(), Request.Form(key).Trim())
+                    End If
                 Next
 
                 If parameters.ContainsKey("CHECKSUMHASH") Then
@@ -23,8 +27,7 @@ Partial Public Class VerifyChecksum
 				Isvalidate = CheckSum.verifyCheckSum(PaytmConstants.MERCHANT_KEY, parameters, paytmChecksum)
 				Response.Write(Isvalidate)
                 
-			Catch ex As Exception
-								                
+			Catch ex As Exception			                
             End Try
 					  
         End If
