@@ -1,6 +1,6 @@
 package com.paytm.pg.checksumKit;
 
-import com.paytm.merchant.*;
+import com.paytm.pg.merchant.*;
 
 import java.util.Map;
 import java.util.TreeMap;
