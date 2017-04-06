@@ -59,6 +59,7 @@ function generateSalt_e($length) {
 function checkString_e($value) {
 	$myvalue = ltrim($value);
 	$myvalue = rtrim($myvalue);
+
 	if ($myvalue == 'null')
 		$myvalue = '';
 	return $myvalue;
@@ -121,6 +122,9 @@ function getArray2Str($arrayList) {
 	$paramStr = "";
 	$flag = 1;
 	foreach ($arrayList as $key => $value) {
+
+		if(strpos($value,"REFUND") != false || strpos($value,"|") != false  ) continue;
+
 		if ($flag) {
 			$paramStr .= checkString_e($value);
 			$flag = 0;
