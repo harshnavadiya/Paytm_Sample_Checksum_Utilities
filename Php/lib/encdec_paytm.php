@@ -1,32 +1,17 @@
 <?php
 
 function encrypt_e($input, $ky) {
-	$key = $ky;
-	$size = mcrypt_get_block_size(MCRYPT_RIJNDAEL_128, 'cbc');
-	$input = pkcs5_pad_e($input, $size);
-	$td = mcrypt_module_open(MCRYPT_RIJNDAEL_128, '', 'cbc', '');
+	$key   = html_entity_decode($ky);
 	$iv = "@@@@&&&&####$$$$";
-	mcrypt_generic_init($td, $key, $iv);
-	$data = mcrypt_generic($td, $input);
-	mcrypt_generic_deinit($td);
-	mcrypt_module_close($td);
-	$data = base64_encode($data);
+	$data = openssl_encrypt ( $input , "AES-128-CBC" , $key, 0, $iv );
 	return $data;
 }
 
 function decrypt_e($crypt, $ky) {
-
-	$crypt = base64_decode($crypt);
-	$key = $ky;
-	$td = mcrypt_module_open(MCRYPT_RIJNDAEL_128, '', 'cbc', '');
+	$key   = html_entity_decode($ky);
 	$iv = "@@@@&&&&####$$$$";
-	mcrypt_generic_init($td, $key, $iv);
-	$decrypted_data = mdecrypt_generic($td, $crypt);
-	mcrypt_generic_deinit($td);
-	mcrypt_module_close($td);
-	$decrypted_data = pkcs5_unpad_e($decrypted_data);
-	$decrypted_data = rtrim($decrypted_data);
-	return $decrypted_data;
+	$data = openssl_decrypt ( $crypt , "AES-128-CBC" , $key, 0, $iv );
+	return $data;
 }
 
 function pkcs5_pad_e($text, $blocksize) {
@@ -59,7 +44,6 @@ function generateSalt_e($length) {
 function checkString_e($value) {
 	$myvalue = ltrim($value);
 	$myvalue = rtrim($myvalue);
-
 	if ($myvalue == 'null')
 		$myvalue = '';
 	return $myvalue;
@@ -77,54 +61,55 @@ function getChecksumFromArray($arrayList, $key, $sort=1) {
 	$checksum = encrypt_e($hashString, $key);
 	return $checksum;
 }
-function getChecksumFromString($str, $key) {
-	
-	$salt = generateSalt_e(4);
-	$finalString = $str . "|" . $salt;
-	$hash = hash("sha256", $finalString);
-	$hashString = $hash . $salt;
-	$checksum = encrypt_e($hashString, $key);
-	return $checksum;
-}
+
 function verifychecksum_e($arrayList, $key, $checksumvalue) {
 	$arrayList = removeCheckSumParam($arrayList);
 	ksort($arrayList);
-	$str = getArray2Str($arrayList);
+	$str = getArray2StrForVerify($arrayList);
 	$paytm_hash = decrypt_e($checksumvalue, $key);
 	$salt = substr($paytm_hash, -4);
+
 	$finalString = $str . "|" . $salt;
+
 	$website_hash = hash("sha256", $finalString);
 	$website_hash .= $salt;
+
 	$validFlag = "FALSE";
 	if ($website_hash == $paytm_hash) {
-		$validFlag = "TRUE";
+		return true;
 	} else {
-		$validFlag = "FALSE";
+		return false;
 	}
-	return $validFlag;
-}
-function verifychecksum_eFromStr($str, $key, $checksumvalue) {
-	$paytm_hash = decrypt_e($checksumvalue, $key);
-	$salt = substr($paytm_hash, -4);
-	$finalString = $str . "|" . $salt;
-	$website_hash = hash("sha256", $finalString);
-	$website_hash .= $salt;
-	$validFlag = "FALSE";
-	if ($website_hash == $paytm_hash) {
-		$validFlag = "TRUE";
-	} else {
-		$validFlag = "FALSE";
-	}
-	return $validFlag;
+	
 }
 
 function getArray2Str($arrayList) {
+	$findme   = 'REFUND';
+	$findmepipe = '|';
+	$paramStr = "";
+	$flag = 1;	
+	foreach ($arrayList as $key => $value) {
+		$pos = strpos($value, $findme);
+		$pospipe = strpos($value, $findmepipe);
+		if ($pos !== false || $pospipe !== false) 
+		{
+			continue;
+		}
+		
+		if ($flag) {
+			$paramStr .= checkString_e($value);
+			$flag = 0;
+		} else {
+			$paramStr .= "|" . checkString_e($value);
+		}
+	}
+	return $paramStr;
+}
+
+function getArray2StrForVerify($arrayList) {
 	$paramStr = "";
 	$flag = 1;
 	foreach ($arrayList as $key => $value) {
-
-		if(strpos($value,"REFUND") != false || strpos($value,"|") != false  ) continue;
-
 		if ($flag) {
 			$paramStr .= checkString_e($value);
 			$flag = 0;
@@ -158,6 +143,26 @@ function initiateTxnRefund($requestParamList) {
 }
 
 function callAPI($apiURL, $requestParamList) {
+	$jsonResponse = "";
+	$responseParamList = array();
+	$JsonData =json_encode($requestParamList);
+	$postData = 'JsonData='.urlencode($JsonData);
+	$ch = curl_init($apiURL);
+	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
+	curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);                                                                  
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+	curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);
+	curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, 0);
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                         
+	'Content-Type: application/json', 
+	'Content-Length: ' . strlen($postData))                                                                       
+	);  
+	$jsonResponse = curl_exec($ch);   
+	$responseParamList = json_decode($jsonResponse,true);
+	return $responseParamList;
+}
+
+function callNewAPI($apiURL, $requestParamList) {
 	$jsonResponse = "";
 	$responseParamList = array();
 	$JsonData =json_encode($requestParamList);
